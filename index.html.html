@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>40 Kanal Telegram Ağı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: yayın sinyali konsepti. Mürekkep zemin üstünde yavaşça akan renk lekeleri; tüm yüzeyler sıvı cam paneller. Açılış radarı, kayan kanal bandı, işleyiş, kanal sıralaması, güçlü kapanış. Tek, bilinçli koyu görünüm. */
+:root{
+  --ink:#100E24; --fg:#FFFFFF; --muted:#C9C6E0; --soft:#9C98BC;
+  --tang:#FF5A1F; --sun:#FFC83D; --mint:#22C98F; --sky:#7C8CFF;
+  --glass:rgba(255,255,255,.075); --glass-2:rgba(255,255,255,.12); --edge:rgba(255,255,255,.18);
+  --display:'Bricolage Grotesque', 'Arial Black', Arial, sans-serif;
+  --body:'Manrope', 'Segoe UI', Arial, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));position:relative;z-index:1}
+section{padding-block:72px;position:relative}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.02;letter-spacing:-.02em;text-wrap:balance}
+h2{font-size:clamp(34px,5vw,58px);font-weight:800}
+h3{font-size:22px;font-weight:700;letter-spacing:-.01em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:8px}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sun)}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 12px currentColor}
+.lead{font-size:18px;color:var(--muted);max-width:60ch}
+.head{display:flex;flex-direction:column;gap:16px;margin-bottom:40px}
+
+/* akan renk zemini */
+.blobs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.blobs i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:drift 26s ease-in-out infinite alternate}
+.blobs i:nth-child(1){width:520px;height:520px;background:var(--tang);left:-120px;top:-80px}
+.blobs i:nth-child(2){width:460px;height:460px;background:var(--sky);right:-120px;top:20%;animation-duration:32s}
+.blobs i:nth-child(3){width:420px;height:420px;background:var(--mint);left:20%;bottom:-160px;opacity:.4;animation-duration:38s}
+.blobs i:nth-child(4){width:360px;height:360px;background:var(--sun);right:18%;bottom:10%;opacity:.35;animation-duration:30s}
+@keyframes drift{to{transform:translate(80px,60px) scale(1.12)}}
+
+/* sıvı cam */
+.glass{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.04));border:1px solid var(--edge);border-radius:26px;-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(255,255,255,.06),0 24px 60px rgba(5,4,20,.35);overflow:hidden}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(120% 60% at 15% 0%,rgba(255,255,255,.22),rgba(255,255,255,0) 55%);pointer-events:none}
+.glass > *{position:relative}
+.tint-sun{background:linear-gradient(145deg,rgba(255,200,61,.38),rgba(255,200,61,.10))}
+.tint-mint{background:linear-gradient(145deg,rgba(34,201,143,.36),rgba(34,201,143,.08))}
+.tint-tang{background:linear-gradient(145deg,rgba(255,90,31,.45),rgba(255,90,31,.12))}
+.tint-sky{background:linear-gradient(145deg,rgba(124,140,255,.38),rgba(124,140,255,.10))}
+
+/* HERO */
+.hero{padding-block:72px 0}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(44px,7vw,94px);font-weight:800;margin-top:20px}
+.hero h1 .big{display:block;background:linear-gradient(90deg,var(--sun),var(--tang));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{margin-top:24px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;padding:14px 24px;border-radius:999px;text-decoration:none;font-family:var(--body);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-sun{background:var(--sun);color:var(--ink);box-shadow:0 10px 30px rgba(255,200,61,.35)}
+.btn-glass{color:var(--fg)}
+
+.radar{position:relative;width:min(440px,100%);aspect-ratio:1;margin-inline:auto}
+.ring{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.16);inset:0}
+.ring.r2{inset:16%}.ring.r3{inset:32%}
+.ring.r1{animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{50%{border-color:rgba(255,200,61,.5)}}
+.core{position:absolute;inset:39%;border-radius:50%;background:linear-gradient(145deg,#FF7A45,var(--tang));display:grid;place-items:center;box-shadow:0 0 0 10px rgba(255,90,31,.18),0 0 0 22px rgba(255,90,31,.08),0 0 60px rgba(255,90,31,.5)}
+.core svg{width:46%;height:46%}
+.node{position:absolute;transform:translate(-50%,-50%);border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;line-height:1.25;white-space:nowrap}
+.node b{font-family:var(--mono);font-size:12px}
+.node span{font-size:12px;color:var(--muted)}
+
+.ticker{margin-top:64px;border-block:1px solid var(--edge);background:rgba(255,255,255,.05);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);overflow:hidden;position:relative;z-index:1}
+.track{display:flex;gap:36px;width:max-content;padding-block:16px;animation:slide 60s linear infinite}
+.track span{font-family:var(--mono);font-size:14px;color:var(--muted);white-space:nowrap}
+.track span i{font-style:normal;color:var(--sun);margin-right:6px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.stat{padding:24px;display:flex;flex-direction:column;gap:8px}
+.stat strong{font-family:var(--display);font-size:clamp(34px,4vw,48px);font-weight:800;line-height:1}
+.stat small{font-size:14px;color:var(--muted)}
+.stats-wrap{padding-block:44px 0}
+
+/* model */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.fstep{padding:28px;display:flex;flex-direction:column;gap:14px}
+.fstep .k{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink)}
+.fstep p{color:var(--muted);font-size:15px}
+.fwd{margin-top:6px;border-radius:16px;padding:12px 14px;background:rgba(10,8,30,.45);border:1px solid var(--edge);font-size:13px;display:flex;flex-direction:column;gap:4px}
+.fwd small{color:var(--sky);font-weight:600}
+.fwd span{color:var(--muted)}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.tile{padding:30px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tile p{font-size:16px;color:var(--muted)}
+.t1{grid-column:span 4}
+.t1 h3{font-size:clamp(28px,3.2vw,40px);font-weight:800}
+.t1 p{font-size:17px;max-width:54ch}
+.t2{grid-column:span 2}
+.t2 strong{font-family:var(--display);font-size:72px;font-weight:800;line-height:.9}
+.t2 p,.t4 p{color:#F2F0FF}
+.t3,.t4,.t5{grid-column:span 2}
+
+/* categories */
+.mix{display:flex;height:64px;border-radius:18px;overflow:hidden;gap:4px;padding:4px}
+.mix span{display:flex;align-items:center;padding-left:14px;font-family:var(--mono);font-weight:700;font-size:14px;min-width:0;overflow:hidden;white-space:nowrap;border-radius:14px;color:var(--ink)}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:16px}
+.legend div{padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.legend strong{font-family:var(--display);font-size:30px;font-weight:800;line-height:1}
+.legend small{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.legend small i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* leaderboard */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{font-family:var(--body);font-weight:600;font-size:14px;color:var(--fg);background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:999px;padding:8px 15px;cursor:pointer;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.chip em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--soft);margin-left:6px}
+.chip[aria-pressed="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+.chip[aria-pressed="true"] em{color:var(--ink)}
+.board{padding:8px}
+.row{display:grid;grid-template-columns:44px minmax(0,1.3fr) minmax(0,2fr) 96px;gap:14px;align-items:center;padding:12px 14px;border-radius:16px;text-decoration:none;color:var(--fg)}
+.row:hover{background:rgba(255,255,255,.08)}
+.row .rk{font-family:var(--mono);font-size:13px;color:var(--soft)}
+.row .nm{display:flex;flex-direction:column;min-width:0}
+.row .nm b{font-family:var(--mono);font-size:14px;overflow-wrap:anywhere}
+.row .nm small{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
+.row .nm small i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.bar{height:12px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar span{display:block;height:100%;border-radius:999px}
+.row .ct{text-align:right;font-family:var(--mono);font-weight:700;font-size:14px}
+.board-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 4px 0;color:var(--muted);font-size:14px}
+.viewbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.viewbar .tools{margin-bottom:0}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--edge)}
+.seg button{font-family:var(--body);font-weight:700;font-size:14px;color:var(--muted);background:transparent;border:none;border-radius:999px;padding:8px 16px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--ink)}
+.cloud{padding:22px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
+.pill{display:inline-flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--fg);border-radius:999px;padding:8px 14px;border:1px solid var(--edge);background:var(--c);transition:transform .2s,box-shadow .2s;animation:pop .45s ease both;animation-delay:var(--d)}
+.pill:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(0,0,0,.35)}
+.pill b{font-family:var(--mono);font-weight:700}
+.pill span{font-family:var(--mono);font-size:12px;opacity:.85}
+.pill.xl{font-size:22px;padding:14px 22px}.pill.l{font-size:17px;padding:11px 18px}.pill.m{font-size:14px}.pill.s{font-size:12px;padding:6px 11px}
+.pill.xl span,.pill.l span{font-size:13px}
+@keyframes pop{from{opacity:.25;transform:scale(.9)}to{opacity:1;transform:none}}
+.more{display:block;width:calc(100% - 16px);margin:8px auto 6px;font-family:var(--body);font-weight:700;font-size:15px;color:var(--ink);background:var(--sun);border:none;border-radius:14px;padding:13px;cursor:pointer}
+.more[hidden]{display:none}
+.board-foot b{color:var(--fg);font-family:var(--mono)}
+
+/* kapanış */
+.finale{padding:clamp(28px,5vw,64px);display:flex;flex-direction:column;gap:28px;text-align:left}
+.finale h2{font-size:clamp(40px,6.4vw,84px)}
+.finale h2 em{font-style:normal;background:linear-gradient(90deg,var(--sun),var(--tang));-webkit-background-clip:text;background-clip:text;color:transparent}
+.finale .lead{font-size:19px;color:#E4E2F5;max-width:64ch}
+.proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.proof div{padding:20px;display:flex;flex-direction:column;gap:6px}
+.proof strong{font-family:var(--display);font-size:34px;font-weight:800;line-height:1}
+.proof small{color:var(--muted);font-size:14px}
+.sign{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);font-weight:700}
+footer{padding-block:28px;font-size:13px;color:var(--soft);position:relative;z-index:1}
+
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow,.proof{grid-template-columns:minmax(0,1fr)}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .t1{grid-column:span 2}.t2,.t3,.t4,.t5{grid-column:span 1}
+  .legend{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mix span{font-size:0;padding:0}
+}
+@media (max-width:560px){
+  section{padding-block:56px}
+  .stats,.bento{grid-template-columns:minmax(0,1fr)}
+  .t1,.t2,.t3,.t4,.t5{grid-column:auto}
+  .row{grid-template-columns:30px minmax(0,1fr) 78px}
+  .row .bar{grid-column:2/4;grid-row:2}
+  .node{padding:5px 8px}.node span{display:none}
+  .blobs i{filter:blur(70px)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body style="margin:0">
+
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Telegram yayın ağı · 40 kanal</span>
+      <h1><span class="big num">559.587</span>aboneye tek gönderiyle ulaşın.</h1>
+      <p class="lead">Siz kendi kanalınızda paylaşırsınız. Spor, haber, gündem ve magazin kanallarından oluşan 40 kanallık ağımız gönderinizi aynı anda repost eder. Gönderiniz, sizin kanalınızın adıyla yarım milyondan fazla abonenin akışına düşer.</p>
+      <div class="cta-row">
+        <a class="btn btn-sun" href="#model">Nasıl çalışır →</a>
+        <a class="btn btn-glass glass" style="border-radius:999px" href="#kanallar">40 kanalı incele</a>
+      </div>
+    </div>
+    <div class="radar" aria-label="Markanın gönderisi merkezden 40 kanala yayılıyor; en büyük kanallardan örnekler">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="core"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#100E24" d="M21.5 3.2 2.9 10.4c-1 .4-1 1.8.1 2.1l4.7 1.5 1.8 5.7c.2.8 1.2 1 1.8.4l2.6-2.5 4.8 3.5c.7.5 1.6.1 1.8-.7L23 4.6c.2-1-.6-1.8-1.5-1.4Zm-3.3 4.1-8.6 7.8-.4 3.6-1.3-4.3 10.3-7.1Z"/></svg></div>
+      <div class="node glass tint-sun" style="left:50%;top:4%"><b>@fenerinhaberi</b><span class="num">42.176 abone</span></div>
+      <div class="node glass" style="left:88%;top:30%"><b>@atakkontra</b><span class="num">38.241 abone</span></div>
+      <div class="node glass tint-mint" style="left:86%;top:74%"><b>@haklitivitler</b><span class="num">34.210 abone</span></div>
+      <div class="node glass" style="left:48%;top:96%"><b>@onyedisports</b><span class="num">22.718 abone</span></div>
+      <div class="node glass tint-sky" style="left:12%;top:72%"><b>@kademespor</b><span class="num">22.640 abone</span></div>
+      <div class="node glass" style="left:13%;top:28%"><b>@portretarih</b><span class="num">22.556 abone</span></div>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true"><div class="track" id="track"></div></div>
+</header>
+
+<div class="wrap stats-wrap">
+  <div class="stats">
+    <div class="stat glass tint-tang"><strong class="num">559.587</strong><small style="color:#FFE9DF">toplam abone</small></div>
+    <div class="stat glass"><strong class="num">40</strong><small>aktif Telegram kanalı</small></div>
+    <div class="stat glass"><strong class="num">21</strong><small>spor ve futbol kanalı</small></div>
+    <div class="stat glass"><strong class="num">42.176</strong><small>en büyük kanalın abonesi</small></div>
+  </div>
+</div>
+
+<section id="model">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">İş modeli</span>
+      <h2>Gönderi sizin, yayılma bizden</h2>
+      <p class="lead">Repost modelinde içerik her zaman markanın kendi kanalından çıkar. Ağımız gönderinizi olduğu gibi çoğaltır; görünen ad, kaynak ve trafik size aittir.</p>
+    </div>
+    <div class="flow">
+      <div class="fstep glass"><span class="k" style="background:var(--sun)">1</span><h3>Siz paylaşırsınız</h3><p>Marka, gönderisini kendi Telegram kanalında yayınlar. İçerik, dil ve görsel tamamen sizin elinizde.</p></div>
+      <div class="fstep glass"><span class="k" style="background:var(--mint)">2</span><h3>40 kanal repost eder</h3><p>Gönderiniz ağdaki 40 kanalda aynı anda paylaşılır ve 559.587 abonenin akışına düşer.</p>
+        <div class="fwd"><small>↪ Şu kanaldan iletildi: Markanız</small><span>Her repostta kaynak olarak sizin kanalınız görünür.</span></div></div>
+      <div class="fstep glass"><span class="k" style="background:var(--tang)">3</span><h3>Trafik size akar</h3><p>Abone, gönderinin üstündeki kanal adınıza tek dokunuşla kanalınıza geçer. Etkileşim ve yeni takipçi doğrudan markanıza yazılır.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Neden bu ağ</span>
+      <h2>Reklam alanı değil, her gün açılan akış</h2>
+    </div>
+    <div class="bento">
+      <article class="tile t1 glass">
+        <h3>Organik büyümüş, gerçek kitle</h3>
+        <p>Kanallarımız takipçilerini haber ve spor gündemiyle kazandı. Abonelerimiz bu kanallara kendi isteğiyle katıldı. Gönderiniz, güvendikleri kaynağın akışında karşılarına çıkar.</p>
+      </article>
+      <article class="tile t2 glass tint-sun">
+        <strong class="num">%49</strong>
+        <p>Abonelerin yaklaşık yarısı spor ve futbol kanallarında. Maç günleri ve transfer dönemleri en hareketli zaman.</p>
+      </article>
+      <article class="tile t3 glass">
+        <h3>Tekrarlı temas</h3>
+        <p>Birden fazla kanalı takip eden kişi markanızı farklı kaynaklardan tekrar görür. Tekrar, hatırlanırlığı artırır.</p>
+      </article>
+      <article class="tile t4 glass tint-mint">
+        <h3>Kaynak her zaman siz</h3>
+        <p>Repost, gönderinizi değiştirmez. Kanal adınız her paylaşımda görünür ve marka bilinirliği size yazılır.</p>
+      </article>
+      <article class="tile t5 glass">
+        <h3>Tek seferde 40 kanal</h3>
+        <p>Kanal kanal uğraşmazsınız. Tek gönderi, aynı anda tüm ağda.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Abone dağılımı</span>
+      <h2>Dört kategori, 559.587 abone</h2>
+      <p class="lead">Toplam abonenin kanal kategorilerine göre dağılımı.</p>
+    </div>
+    <div class="mix glass" role="img" aria-label="Abone dağılımı: spor 276.444, haber ve gündem 155.129, magazin ve eğlence 78.858, kültür ve bilgi 49.156">
+      <span style="flex:276444;background:var(--tang)">Spor %49</span>
+      <span style="flex:155129;background:var(--sky)">Haber %28</span>
+      <span style="flex:78858;background:var(--sun)">Magazin %14</span>
+      <span style="flex:49156;background:var(--mint)">Bilgi %9</span>
+    </div>
+    <div class="legend">
+      <div class="glass"><strong class="num">276.444</strong><small><i style="background:var(--tang)"></i>Spor ve futbol · 21 kanal</small></div>
+      <div class="glass"><strong class="num">155.129</strong><small><i style="background:var(--sky)"></i>Haber ve gündem · 12 kanal</small></div>
+      <div class="glass"><strong class="num">78.858</strong><small><i style="background:var(--sun)"></i>Magazin ve eğlence · 4 kanal</small></div>
+      <div class="glass"><strong class="num">49.156</strong><small><i style="background:var(--mint)"></i>Kültür ve bilgi · 3 kanal</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="kanallar" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Kanal sıralaması</span>
+      <h2>Ağdaki 40 kanal</h2>
+      <p class="lead">Kutuların büyüklüğü abone sayısını gösterir. Her kanala tıklayıp içeriğini ve kitlesini kendiniz inceleyebilirsiniz.</p>
+    </div>
+    <div class="viewbar">
+      <div class="tools" role="group" aria-label="Kategori filtresi" id="filters"></div>
+      <div class="seg" role="group" aria-label="Görünüm">
+        <button type="button" id="v-cloud" aria-pressed="true">Mozaik</button>
+        <button type="button" id="v-list" aria-pressed="false">Sıralama</button>
+      </div>
+    </div>
+    <div class="cloud glass" id="cloud"></div>
+    <div class="board glass" id="board" hidden>
+      <div id="rows"></div>
+      <button type="button" class="more" id="more"></button>
+    </div>
+    <div class="board-foot"><span id="shown"></span><span>Toplam abone: <b class="num" id="sum"></b></span></div>
+    <p style="margin-top:14px;color:var(--soft);font-size:13px">Abone sayıları 3 Kasım 2026 tarihli kanal sayfalarından alınmıştır.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="finale glass">
+      <span class="eyebrow">Son söz</span>
+      <h2>Bir gönderi. 40 kanal. <em>559.587 abone.</em></h2>
+      <p class="lead">Markanızın sesi, kendi kanalınızın sınırında kalmasın. Ağımızla birlikte paylaştığınız her gönderi, spor ve gündemi her gün takip eden yarım milyonu aşkın kişinin önüne sizin adınızla çıkar. Kitle hazır, kanallar hazır. Eksik olan tek şey sizin gönderiniz.</p>
+      <div class="proof">
+        <div class="glass tint-sun"><strong class="num">40</strong><small style="color:#FFF4D6">kanal aynı anda repost</small></div>
+        <div class="glass tint-mint"><strong class="num">559.587</strong><small style="color:#DDFBEF">toplam abone</small></div>
+        <div class="glass tint-tang"><strong>%100</strong><small style="color:#FFE9DF">kaynak ve trafik markanın</small></div>
+      </div>
+      <p class="sign">Gönderiyi siz paylaşın, yayılmasını bize bırakın.</p>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">40 Kanal Telegram Ağı · Tanıtım dosyası</div></footer>
+
+<script>
+const CATS={spor:{label:"Spor ve futbol",color:"var(--tang)"},haber:{label:"Haber ve gündem",color:"var(--sky)"},mag:{label:"Magazin ve eğlence",color:"var(--sun)"},bilgi:{label:"Kültür ve bilgi",color:"var(--mint)"}};
+const LIST=[["fenerinhaberi","spor",42176],["haklitivitler","mag",34210],["atakkontra","spor",38241],["ortasahaspor","spor",15997],["novahaberajans","haber",22152],["kademespor","spor",22640],["haber360ajans","haber",20076],["habernetajans","haber",21981],["anlikgundemhaberler","haber",22015],["poppemagazin","mag",21947],["sansursuzajans","haber",21185],["scoresportt","spor",21011],["haberdrop","haber",17103],["onyedisports","spor",22718],["gundemsport","spor",19810],["portretarih","bilgi",22556],["neizledimlan","mag",19540],["nasilyapildi","bilgi",21416],["gshaberim","spor",21247],["kartalhaberim","spor",18038],["sporunmerkez","spor",3777],["sporturbo","spor",4480],["goalhaberi","spor",5423],["tarihiolay","bilgi",5184],["futbolbudur","spor",3012],["sportniks","spor",3295],["aslanhaberim","spor",3450],["haberkartalim","spor",5190],["fenerinyeri","spor",4127],["vessamagazin","mag",3161],["haberbultenin","haber",6915],["haberbultenim","haber",4052],["futbolhaberlerim","spor",4219],["trfutbolum","spor",5423],["jethaberi","haber",3441],["haberanalizim","haber",5737],["gundemimhaber","haber",5053],["sporalemi","spor",5985],["futbolaski","spor",6185],["gundemhaberim","haber",5419]].map(x=>({h:x[0],c:x[1],n:x[2]}));
+const fmt=n=>n.toLocaleString("tr-TR");
+const MAX=Math.max(...LIST.map(x=>x.n));
+const rows=document.getElementById("rows"),filters=document.getElementById("filters"),cloud=document.getElementById("cloud"),board=document.getElementById("board"),more=document.getElementById("more");
+const TINT={spor:"rgba(255,90,31,.38)",haber:"rgba(124,140,255,.38)",mag:"rgba(255,200,61,.40)",bilgi:"rgba(34,201,143,.38)"};
+let active="all",view="cloud",expanded=false;
+const tier=n=>n>=30000?"xl":n>=18000?"l":n>=5000?"m":"s";
+function render(){
+  const items=LIST.filter(x=>active==="all"||x.c===active).sort((a,b)=>b.n-a.n);
+  cloud.hidden=view!=="cloud";board.hidden=view!=="list";
+  cloud.innerHTML="";
+  if(view==="cloud"){
+    const mixed=items.slice().sort((a,b)=>(a.h.length*7919%13)-(b.h.length*7919%13)||b.n-a.n);
+    mixed.forEach((x,i)=>{
+      const a=document.createElement("a");a.className="pill "+tier(x.n);a.href="https://t.me/"+x.h;a.target="_blank";a.rel="noopener";
+      a.style.setProperty("--c",TINT[x.c]);a.style.setProperty("--d",(i*18)+"ms");
+      a.title=CATS[x.c].label+" · "+fmt(x.n)+" abone";
+      a.innerHTML="<b>@"+x.h+"</b><span>"+fmt(x.n)+"</span>";
+      cloud.appendChild(a);
+    });
+  }
+  rows.innerHTML="";
+  const LIMIT=10,shown=expanded?items:items.slice(0,LIMIT);
+  more.hidden=items.length<=LIMIT;
+  more.textContent=expanded?"Daralt ↑":"Tümünü göster · "+(items.length-LIMIT)+" kanal daha ↓";
+  shown.forEach((x,i)=>{
+    const a=document.createElement("a");a.className="row";a.href="https://t.me/"+x.h;a.target="_blank";a.rel="noopener";
+    a.innerHTML='<span class="rk">'+String(i+1).padStart(2,"0")+'</span><span class="nm"><b>@'+x.h+'</b><small><i style="background:'+CATS[x.c].color+'"></i>'+CATS[x.c].label+'</small></span><span class="bar"><span style="width:'+(x.n/MAX*100).toFixed(1)+'%;background:'+CATS[x.c].color+'"></span></span><span class="ct num">'+fmt(x.n)+'</span>';
+    rows.appendChild(a);
+  });
+  document.getElementById("shown").textContent=items.length+" kanal gösteriliyor";
+  document.getElementById("sum").textContent=fmt(items.reduce((s,x)=>s+x.n,0));
+}
+function chip(key,label,num){
+  const b=document.createElement("button");b.type="button";b.className="chip";b.id="f-"+key;
+  b.innerHTML=label+"<em>"+num+"</em>";b.setAttribute("aria-pressed",String(key===active));
+  b.addEventListener("click",()=>{active=key;filters.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));render()});
+  filters.appendChild(b);
+}
+chip("all","Tümü",LIST.length);
+Object.entries(CATS).forEach(([k,v])=>chip(k,v.label,LIST.filter(x=>x.c===k).length));
+const vc=document.getElementById("v-cloud"),vl=document.getElementById("v-list");
+function setView(v){view=v;vc.setAttribute("aria-pressed",String(v==="cloud"));vl.setAttribute("aria-pressed",String(v==="list"));render()}
+vc.addEventListener("click",()=>setView("cloud"));
+vl.addEventListener("click",()=>setView("list"));
+more.addEventListener("click",()=>{expanded=!expanded;render();if(!expanded)board.scrollIntoView({behavior:"smooth",block:"start"})});
+render();
+const t=LIST.slice().sort((a,b)=>b.n-a.n).map(x=>'<span><i>●</i>@'+x.h+' · '+fmt(x.n)+'</span>').join("");
+document.getElementById("track").innerHTML=t+t;
+</script>
+</body>
+</html>
